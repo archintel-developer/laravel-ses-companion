@@ -13,7 +13,9 @@ class SesCompanionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->publishes([
+            __DIR__ . '/resources/assets' => resource_path('js/ArchintelDev/SesCompanion'
+        )], 'vue-components');
     }
 
     /**
