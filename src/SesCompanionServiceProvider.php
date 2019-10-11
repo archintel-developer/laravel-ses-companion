@@ -4,7 +4,7 @@ namespace ArchintelDev\SesCompanion;
 
 use Illuminate\Support\ServiceProvider;
 
-class SesCompanionProvider extends ServiceProvider
+class SesCompanionServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
