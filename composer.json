@@ -1,0 +1,25 @@
+{
+    "name": "archintel-dev/ses-companion",
+    "description": "A laravel-ses companion to create a group and adding subscriber to a group, send email to groups subscriber.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Archintel Developer",
+            "email": "developer@archintel.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ArchintelDev\\SesCompanion\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ArchintelDev\\SesCompanion\\SesCompanionServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
