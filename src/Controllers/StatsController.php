@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace ArchintelDev\SesCompanion\Controllers;
 
 use Illuminate\Http\Request;
 
