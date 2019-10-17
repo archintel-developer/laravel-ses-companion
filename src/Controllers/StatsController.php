@@ -3,6 +3,7 @@
 namespace ArchintelDev\SesCompanion\Controllers;
 
 use Illuminate\Http\Request;
+use ArchintelDev\SesCompanion\Models\Client;
 
 class StatsController extends Controller
 {

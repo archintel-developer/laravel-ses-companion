@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class ImportController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     public function import_subscriber($uuid)
     {
-        return view('companion.import_subscriber');
+        return view('companion.import-subscriber');
     }
 
     public function importSubscriber(Request $request)
@@ -31,7 +31,10 @@ class ImportController extends Controller
             $path = 'storage/' . $name;
 
             if($fileExtension == 'xlsx') {
-                Excel::import(new SubscribersImport($request->client_id), $path);
+                $saved = Excel::import(new SubscribersImport($request->client_id), $path);
+                if($saved) {
+                    return response()->json(['status' => true, 'msg' => 'Imported successfuly!']);
+                }
             }
         }
     }

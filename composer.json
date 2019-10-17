@@ -23,6 +23,7 @@
     "minimum-stability": "dev",
     "require": {
         "ramsey/uuid": "^3.8",
+        "laravelcollective/html": "^6.0",
         "maatwebsite/excel": "^3.1"
     }
 }

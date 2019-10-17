@@ -18,8 +18,12 @@ class SesCompanionServiceProvider extends ServiceProvider
         )], 'vue-components');
         
         $this->publishes([
-            __DIR__.'/resources/views' => resource_path('views/ses-companion'
+            __DIR__.'/resources/views' => resource_path('views/companion'
         )], 'blade-templates');
+
+        // $this->publishes([
+        //     __DIR__.'/Imports' => app_path('Imports'
+        // )], 'imports');
 
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->loadRoutesFrom(__DIR__.'/routes.php');

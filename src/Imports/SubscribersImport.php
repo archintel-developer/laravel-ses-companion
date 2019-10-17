@@ -2,7 +2,7 @@
 
 namespace ArchintelDev\SesCompanion\Imports;
 
-use ArchintelDev\SesCompanion\Subscriber;
+use ArchintelDev\SesCompanion\Models\Subscriber;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;

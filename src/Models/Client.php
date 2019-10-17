@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
+    protected $table = 'clients';
+
+    protected $guarded = [];
+    
     protected $fillable = [
         'email', 'name', 'slug', 'client_uuid'
     ];

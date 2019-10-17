@@ -11,11 +11,11 @@ Import Subscriber
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ Request::referrer() }}" class="" style="text-decoration:none;">&xlarr; Back</a>
-                    </div>
+                    {{-- <div class="card-header"> --}}
+                        {{-- <a href="{{ Request::referrer() }}" class="" style="text-decoration:none;">&xlarr; Back</a> --}}
+                    {{-- </div> --}}
 
-                        <form method="post" action="{{ route('importUser') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('importSub', $uuid ?? '') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
 
@@ -34,6 +34,9 @@ Import Subscriber
                             <div class="form-group">
                                 <h3 for="file">Upload Users</h3>
                                 <input type="file" name="file" id="file">
+
+                                <input type="hidden" name="slug" id="slug" value="{{Request::segment(2)}}">
+                                <input type="hidden" name="client_id" id="client_id" value="{{Request::segment(3)}}">
                             </div>
                             <div class="form-group" id="btnBtn">
                                 <button type="submit" id="submit" class="btn btn-primary">Upload Users</button>
