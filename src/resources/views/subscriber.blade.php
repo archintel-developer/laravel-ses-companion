@@ -15,7 +15,7 @@
                             <h2> {{ $client->name }} Subscribers </h2>
                         </div>
                         <div class="card-body">
-                            <button type="button" class="btn btn-success mb-2" onclick="window.location.href='/import-subscriber'">
+                                <button type="button" class="btn btn-success mb-2" onclick="window.location.href='/import-subscriber/{{ $client->slug }}/{{$client->client_uuid}}'">
                                 <span class="fa fa-plus"></span>
                                 Import
                             </button>
@@ -33,7 +33,7 @@
                                             <td class="text-center" colspan="3">
                                                 <div class="mt-4">
                                                     Empty. No subscriber(s) found.
-                                                    <a href="/import-subscriber" style="text-decoration:none;">
+                                                        <a href="/import-subscriber/{{ $client->slug }}/{{ $client->client_uuid }}" style="text-decoration:none;">
                                                         <span class="text-primary"> Import ?</span>
                                                     </a>
                                                 </div>

@@ -1,8 +1,9 @@
 <?php
 
-namespace ArchintelDev\SesCompanion\Http\Controllers;
+namespace ArchintelDev\SesCompanion\Controllers;
 
 use Storage;
+use Illuminate\Routing\Controller;
 use ArchintelDev\SesCompanion\Imports\SubscribersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;

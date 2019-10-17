@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use ArchintelDev\SesCompanion\Models\Client;
+use ArchintelDev\SesCompanion\Models\Subscriber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
