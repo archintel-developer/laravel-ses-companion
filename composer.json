@@ -22,6 +22,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "ramsey/uuid": "^3.8"
+        "ramsey/uuid": "^3.8",
+        "maatwebsite/excel": "^3.1"
     }
 }

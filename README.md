@@ -19,5 +19,17 @@ require('./ArchintelDev/SesCompanion/app');
 ```
 will be provided soon
 ```
+for dashboard :
+```html
+<dashboard></dashboard>
+```
+for import subscribers: **add in your routes**
+```html
+<import-subscriber></import-subscriber>
+```
+for view subscribers on group:
+```php
+Route::get('client/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_subscribers']);
+```
 
 ### 

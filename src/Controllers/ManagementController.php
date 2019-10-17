@@ -111,4 +111,17 @@ class ManagementController extends Controller
     {
         return response()->json(['id' => $uuid]);
     }
+
+    public function show_dashboard()
+    {
+        return view('pages.management');
+    }
+
+    public function show_client_sub($uuid)
+    {
+        $clients = Client::where('client_uuid', $uuid)->first();
+        $subscribers = Subscriber::where('client_id', $uuid)->get();
+
+        return view('companion.subscriber')->with(['client' => $clients, 'subscribers' => $subscribers]);
+    }
 }
