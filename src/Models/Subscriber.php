@@ -11,6 +11,6 @@ class Subscriber extends Model
     protected $guarded = [];
 
     protected $fillable = [
-        'firstname', 'lastname', 'email', 'client_id'
+        'firstname', 'lastname', 'email', 'client_id', 'group_id'
     ]; 
 }

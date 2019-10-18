@@ -24,6 +24,9 @@ Route::resource('management', 'ArchintelDev\SesCompanion\Controllers\ManagementC
 Route::get('client/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_subscribers']);
 Route::get('/client/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_client_sub']);
 // Route::get('/dashboard', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_dashboard')->name('dashboard');
+// Route::get('/group/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group']);
+
+Route::resource('group', 'ArchintelDev\SesCompanion\Controllers\GroupController');
 
 Route::get('/import-subscriber/{slug}/{uuid}', 'ArchintelDev\SesCompanion\Controllers\ImportController@import_subscriber')->name('importUser');
 Route::post('/importSubscriber', 'ArchintelDev\SesCompanion\Controllers\ImportController@importSubscriber')->name('importSub');

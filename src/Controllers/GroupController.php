@@ -1,26 +1,21 @@
 <?php
 
-namespace ArchintelDev\SesCompanion\Controllers;
+namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
-use Illuminate\Routing\Controller;
+use App\Group;
 use Illuminate\Http\Request;
-use ArchintelDev\SesCompanion\Models\Client;
-use ArchintelDev\SesCompanion\Models\Subscriber;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 
-class ManagementController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         if($request->wantsJson()) {
-            return response()->json(['clients' => Client::all()]);
+            return response()->json(['groups' => Group::all()]);
         }
     }
 
@@ -42,11 +37,9 @@ class ManagementController extends Controller
      */
     public function store(Request $request)
     {
-        $client = new Client();
+        $client = new Group();
         $client->name = $request->name;
-        $client->email = $request->email;
-        $client->slug = Str::slug($request->name, '-');
-        $client->client_uuid = Uuid::uuid1()->toString();
+        $client->client_id = $request->client_id;
         $saved = $client->save();
 
         if($saved) {
@@ -59,10 +52,10 @@ class ManagementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Group $group)
     {
         //
     }
@@ -70,10 +63,10 @@ class ManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Group $group)
     {
         //
     }
@@ -82,10 +75,10 @@ class ManagementController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Group $group)
     {
         //
     }
@@ -93,12 +86,12 @@ class ManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Group $group)
     {
-        $client = Client::find($id);
+        $client = Group::find($id);
         $deleted = $client->delete();
 
         if($deleted) {
@@ -106,29 +99,5 @@ class ManagementController extends Controller
         } else {
             return response()->json(['msg' => 'Error deleting data!', 'success' => false]);
         }
-    }
-
-    public function show_subscribers($uuid)
-    {
-        return response()->json(['id' => $uuid]);
-    }
-
-    public function show_dashboard()
-    {
-        return view('pages.management');
-    }
-
-    public function show_client_sub($uuid)
-    {
-        $clients = Client::where('client_uuid', $uuid)->first();
-        $subscribers = Subscriber::where('client_id', $uuid)->get();
-
-        return view('companion.subscriber')->with(['client' => $clients, 'subscribers' => $subscribers]);
-    }
-
-    public function show_group($account_id)
-    {
-        $account = Client::where('client_uuid', $account_id)->first();
-        return view('companion.group')->with('account', $account);
     }
 }

@@ -19,7 +19,9 @@ class CreateSubscribersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('email')->nullable();
             $table->string('client_id')->nullable();
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->foreign('client_id')->references('client_uuid')->on('clients');
+            $table->foreign('group_id')->references('id')->on('groups');
             $table->timestamps();
         });
     }
