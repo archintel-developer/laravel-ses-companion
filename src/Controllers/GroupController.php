@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace ArchintelDev\SesCompanion\Controllers;
 
-use App\Group;
 use Illuminate\Http\Request;
+use ArchintelDev\SesCompanion\Models\Group;
 
 class GroupController extends Controller
 {
@@ -91,7 +91,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        $client = Group::find($id);
+        $client = Group::find($group);
         $deleted = $client->delete();
 
         if($deleted) {
