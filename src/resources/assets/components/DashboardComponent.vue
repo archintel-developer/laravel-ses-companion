@@ -6,7 +6,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-primary text-light">
-                            <h5 class="modal-title">Add Group</h5>
+                            <h5 class="modal-title">Add Account</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -17,10 +17,10 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Group Name</label> 
+                                            <label>Acount Name</label> 
                                             <input type="text" name="name" v-model="name" class="form-control"> 
 
-                                            <label>Group Email</label> 
+                                            <label>Account Email</label> 
                                             <input type="email" name="email" v-model="email" class="form-control"> 
                                         </div>                                         
                                     </div>
@@ -47,16 +47,16 @@
                         <div class="card-header bg-info text-light">
                             <button type="button" class="btn btn-success" @click="showAddGroup()">
                                 <span class="fa fa-plus"></span>
-                                Add Group
+                                Add Account
                             </button>
                         </div>
                         <div class="card-body">
-                            <h4>Groups</h4>          
+                            <h4>Accounts</h4>          
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Group email</th>
+                                        <th>Account email</th>
                                         <th>Creation Date</th>
                                         <th></th>
                                     </tr>
@@ -65,7 +65,7 @@
                                     <tr v-if="!clients.length">
                                         <td class="text-center" colspan="4">
                                             <div class="mt-4">
-                                                No Clients found. 
+                                                No Accounts found. 
                                                 <a href="#" @click="showAddGroup()" style="text-decoration:none;">
                                                     <!-- <span class="fa fa-plus text-primary"></span> -->
                                                     <span class="text-primary"> Add one ?</span>
@@ -75,17 +75,21 @@
                                     </tr>
                                     <tr v-for="client in clients" v-else>
                                         <td>
-                                            <a :href="'/client/'+client.client_uuid">{{ client.name }}</a>
+                                            <!-- <a :href="'/client/'+client.client_uuid">{{ client.name }}</a> -->
+                                            <a :href="'/group/'+client.slug+'/'+client.client_uuid">{{ client.name }}</a>
                                         </td>
                                         <td>{{ client.email }}</td>
                                         <td>{{ client.created_at}}</td>
                                         <td>
-                                            <a href="#">
+                                            <a href="#" class="ml-2">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <!-- <a href="#" @click.prevent="removeClientCredential(credential.id, credential.name)"> -->
-                                            <a href="#" @click.prevent="showRemoveGroup(client.id, client.name)">
+                                            <a href="#" class="ml-2" @click.prevent="showRemoveGroup(client.id, client.name)">
                                                 <i class="fa fa-trash"></i>
+                                            </a>
+                                            <a href="#" class="ml-2">
+                                                <i class="fa fa-envelope"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -111,7 +115,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Are you sure ?</h5>
-                                <p><em>Removing this will delete all the email subscribers registered on this group.</em></p>                                     
+                                <p><em>Removing this will delete all the email groups/subscribers registered on this account.</em></p>                                     
                             </div>
                         </div>
                     </div>

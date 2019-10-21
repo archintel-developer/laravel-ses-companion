@@ -7,5 +7,6 @@ Vue.use(VueIziToast);
 Vue.use(VeeValidate);
 
 Vue.component('dashboard', require('./components/DashboardComponent.vue').default);
+Vue.component('group-component', require('./components/GroupComponent.vue').default);
 
 window.SesCompanion = new Vue();
