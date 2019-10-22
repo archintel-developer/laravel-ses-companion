@@ -16,6 +16,7 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
+            $table->string('slug')->nullable();
             $table->string('client_id')->nullable();
             $table->foreign('client_id')->references('client_uuid')->on('clients');
             $table->timestamps();

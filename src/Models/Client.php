@@ -7,6 +7,7 @@ use ArchintelDev\LaravelSes\Models\EmailLink;
 use ArchintelDev\LaravelSes\Models\EmailBounce;
 use ArchintelDev\LaravelSes\Models\EmailComplaint;
 use ArchintelDev\LaravelSes\Models\EmailOpen;
+use ArchintelDev\SesCompanion\Models\Group;
 use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
@@ -112,9 +113,9 @@ class Client extends Model
         ]);
     }
 
-    public static function statsForEmail($slug, $email)
+    public static function statsForEmail($slug, $group, $email)
     {
-        $id = self::whereEmail($email)->whereSlug($slug)->pluck('client_uuid')->first();
+        $id = Client::whereSlug($slug)->pluck('client_uuid')->first();
         if($id == null) {
             return response()->json([
                 'success' => true,
@@ -122,14 +123,16 @@ class Client extends Model
             ]);
         }
 
+
         return [
-            'client' => self::whereEmail($email)->whereSlug($slug)->get(),
+            'account' => self::whereSlug($slug)->first(),
+            'group' => Group::whereSlug($group)->get(),
             'counts' => [
                 'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $id)->count(),
                 'deliveries' => SentEmail::whereEmail($email)->where('client_id', $id)->whereNotNull('delivered_at')->count(),
-                'opens' => EmailOpen::whereEmail($email)->where('client_id', $id)->whereNotNull('opened_at')->count(),
-                'bounces' => EmailBounce::whereEmail($email)->where('client_id', $id)->whereNotNull('bounced_at')->count(),
-                'complaints' => EmailComplaint::whereEmail($email)->where('client_id', $id)->whereNotNull('complained_at')->count(),
+                'opens' => EmailOpen::whereEmail($email)->whereNotNull('opened_at')->count(),
+                'bounces' => EmailBounce::whereEmail($email)->whereNotNull('bounced_at')->count(),
+                'complaints' => EmailComplaint::whereEmail($email)->whereNotNull('complained_at')->count(),
                 'click_throughs' => EmailLink::join(
                         'laravel_ses_sent_emails',
                         'laravel_ses_sent_emails.id',
@@ -142,9 +145,9 @@ class Client extends Model
             'data' => [
                 'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $id)->get(),
                 'deliveries' => SentEmail::whereEmail($email)->where('client_id', $id)->whereNotNull('delivered_at')->get(),
-                'opens' => EmailOpen::whereEmail($email)->where('client_id', $id)->whereNotNull('opened_at')->get(),
-                'bounces' => EmailBounce::whereEmail($email)->where('client_id', $id)->whereNotNull('bounced_at')->get(),
-                'complaints' => EmailComplaint::whereEmail($email)->where('client_id', $id)->whereNotNull('complained_at')->get(),
+                'opens' => EmailOpen::whereEmail($email)->whereNotNull('opened_at')->get(),
+                'bounces' => EmailBounce::whereEmail($email)->whereNotNull('bounced_at')->get(),
+                'complaints' => EmailComplaint::whereEmail($email)->whereNotNull('complained_at')->get(),
                 'click_throughs' => EmailLink::join(
                     'laravel_ses_sent_emails',
                     'laravel_ses_sent_emails.id',

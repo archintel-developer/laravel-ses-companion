@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-<div id="app" class="main container-fluid">
-    <div class="row row-stretch">
+<div id="app" class="container">
+    {{-- <div class="row row-stretch"> --}}
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12">
@@ -15,7 +15,7 @@
                             <h2> {{ $client->name }} Subscribers </h2>
                         </div>
                         <div class="card-body">
-                                <button type="button" class="btn btn-success mb-2" onclick="window.location.href='/import-subscriber/{{ $client->slug }}/{{$client->client_uuid}}'">
+                            <button type="button" class="btn btn-success mb-2" onclick="window.location.href='/import-subscriber/{{ $client->slug }}/{{$client->client_uuid}}/{{ Request::segment(3) }}'">
                                 <span class="fa fa-plus"></span>
                                 Import
                             </button>
@@ -25,6 +25,7 @@
                                         <th>Lastname</th>
                                         <th>Firstname</th>
                                         <th>Email</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,7 +45,16 @@
                                             <tr>
                                                 <td>{{ $subscriber->lastname }}</td>
                                                 <td>{{ $subscriber->firstname }}</td>
-                                                <td><a href="/{{$client->slug}}/api/stats/email/{{$subscriber->email}}" style="text-decoration: none;">{{ $subscriber->email }}</a></td>
+                                                <td><a href="/{{$client->slug}}/{{$group->slug}}/api/stats/email/{{$subscriber->email}}" style="text-decoration: none;">{{ $subscriber->email }}</a></td>
+                                                <td>
+                                                    <a href="#" class="ml-2">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <!-- <a href="#" @click.prevent="removeClientCredential(credential.id, credential.name)"> -->
+                                                    <a href="#" class="ml-2">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -55,7 +65,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    {{-- </div> --}}
 </div>
 @endsection
 

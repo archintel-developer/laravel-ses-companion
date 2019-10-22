@@ -21,9 +21,9 @@ class SesCompanionServiceProvider extends ServiceProvider
             __DIR__.'/resources/views' => resource_path('views/companion'
         )], 'blade-templates');
 
-        // $this->publishes([
-        //     __DIR__.'/Imports' => app_path('Imports'
-        // )], 'imports');
+        $this->publishes([
+            __DIR__.'/Mail' => app_path('Http/Controllers'
+        )], 'imports');
 
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->loadRoutesFrom(__DIR__.'/routes.php');

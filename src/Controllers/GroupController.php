@@ -2,8 +2,10 @@
 
 namespace ArchintelDev\SesCompanion\Controllers;
 
-use Illuminate\Http\Request;
 use ArchintelDev\SesCompanion\Models\Group;
+use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
@@ -12,7 +14,7 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if($request->wantsJson()) {
             return response()->json(['groups' => Group::all()]);
@@ -37,10 +39,11 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $client = new Group();
-        $client->name = $request->name;
-        $client->client_id = $request->client_id;
-        $saved = $client->save();
+        $group = new Group();
+        $group->name = $request->name;
+        $group->slug = Str::slug($request->name, '-');
+        $group->client_id = $request->client_id;
+        $saved = $group->save();
 
         if($saved) {
             return response()->json(['msg' => '<b>' . $request->name . '</b> successfuly added!', 'success' => true]);
@@ -89,9 +92,9 @@ class GroupController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy($id)
     {
-        $client = Group::find($group);
+        $client = Group::find($id);
         $deleted = $client->delete();
 
         if($deleted) {

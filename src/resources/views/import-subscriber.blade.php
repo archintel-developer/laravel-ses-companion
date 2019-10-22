@@ -35,8 +35,9 @@ Import Subscriber
                                 <h3 for="file">Upload Users</h3>
                                 <input type="file" name="file" id="file">
 
-                                <input type="hidden" name="slug" id="slug" value="{{Request::segment(2)}}">
-                                <input type="hidden" name="client_id" id="client_id" value="{{Request::segment(3)}}">
+                                <input type="hidden" name="account" id="account" value="{{Request::segment(2)}}">
+                                <input type="hidden" name="account_id" id="account_id" value="{{Request::segment(3)}}">
+                                <input type="hidden" name="group" id="group" value="{{Request::segment(4)}}">
                             </div>
                             <div class="form-group" id="btnBtn">
                                 <button type="submit" id="submit" class="btn btn-primary">Upload Users</button>

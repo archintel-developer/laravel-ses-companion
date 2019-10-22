@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use ArchintelDev\SesCompanion\Models\Client;
+use ArchintelDev\SesCompanion\Models\Group;
 use ArchintelDev\SesCompanion\Models\Subscriber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
@@ -118,17 +119,23 @@ class ManagementController extends Controller
         return view('pages.management');
     }
 
-    public function show_client_sub($uuid)
+    public function show_group_sub($uuid, $slug)
     {
-        $clients = Client::where('client_uuid', $uuid)->first();
-        $subscribers = Subscriber::where('client_id', $uuid)->get();
+        $client = Client::where('client_uuid', $uuid)->first();
+        $group = Group::where('slug', $slug)->first();
+        $subscribers = Subscriber::where('client_id', $uuid)->where('group_id', $group->id)->get();
 
-        return view('companion.subscriber')->with(['client' => $clients, 'subscribers' => $subscribers]);
+        return view('companion.subscriber')->with(['client' => $client, 'group' => $group, 'subscribers' => $subscribers]);
     }
 
     public function show_group($account_id)
     {
         $account = Client::where('client_uuid', $account_id)->first();
         return view('companion.group')->with('account', $account);
+    }
+
+    public function show_stat($account, $group)
+    {
+        
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 
-Route::prefix('/{slug}')->group(function () {
-    Route::get('beacon/{beaconIdentifier}', 'ArchintelDev\SesCompanion\Controllers\SnsController@open');
-    Route::get('link/{linkId}', 'ArchintelDev\SesCompanion\Controllers\SnsController@click');
+Route::prefix('/{slug}/{group}')->group(function () {
+    // Route::get('beacon/{beaconIdentifier}', 'ArchintelDev\SesCompanion\Controllers\SnsController@open');
+    // Route::get('link/{linkId}', 'ArchintelDev\SesCompanion\Controllers\SnsController@click');
 
     Route::get('api/has/bounced/{email}', 'ArchintelDev\SesCompanion\Controllers\StatsController@hasBounced');
     Route::get('api/has/complained/{email}', 'ArchintelDev\SesCompanion\Controllers\StatsController@hasComplained');
@@ -11,6 +11,8 @@ Route::prefix('/{slug}')->group(function () {
     Route::get('api/stats/email/{email}', 'ArchintelDev\SesCompanion\Controllers\StatsController@statsForEmail');
 });
 Route::prefix('/sr')->group(function () {
+    Route::get('beacon/{beaconIdentifier}', 'ArchintelDev\SesCompanion\Controllers\SnsController@open');
+    Route::get('link/{linkId}', 'ArchintelDev\SesCompanion\Controllers\SnsController@click');
     // Route::post('notification/bounce', 'ArchintelDev\SesCompanion\Controllers\SnsController@bounce');
     // Route::post('notification/complaint', 'ArchintelDev\SesCompanion\Controllers\SnsController@complaint');
     // Route::post('notification/delivery', 'ArchintelDev\SesCompanion\Controllers\SnsController@delivery');
@@ -28,5 +30,11 @@ Route::get('/client/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\M
 
 Route::resource('group', 'ArchintelDev\SesCompanion\Controllers\GroupController');
 
-Route::get('/import-subscriber/{slug}/{uuid}', 'ArchintelDev\SesCompanion\Controllers\ImportController@import_subscriber')->name('importUser');
+Route::get('/account/{account}/{account_id}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group');
+Route::get('/group/{account_id}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group_sub');
+Route::get('/subscriber/{account}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_stat');
+
+Route::get('/send-mail/{type}/{account}/{account_id}/{group?}', 'ArchintelDev\SesCompanion\Controllers\SnsController@send');
+
+Route::get('/import-subscriber/{account}/{account_uuid}/{group}', 'ArchintelDev\SesCompanion\Controllers\ImportController@import_subscriber')->name('importUser');
 Route::post('/importSubscriber', 'ArchintelDev\SesCompanion\Controllers\ImportController@importSubscriber')->name('importSub');

@@ -76,7 +76,7 @@
                                     <tr v-for="client in clients" v-else>
                                         <td>
                                             <!-- <a :href="'/client/'+client.client_uuid">{{ client.name }}</a> -->
-                                            <a :href="'/group/'+client.slug+'/'+client.client_uuid">{{ client.name }}</a>
+                                            <a :href="'/account/'+client.slug+'/'+client.client_uuid">{{ client.name }}</a>
                                         </td>
                                         <td>{{ client.email }}</td>
                                         <td>{{ client.created_at}}</td>
@@ -88,7 +88,7 @@
                                             <a href="#" class="ml-2" @click.prevent="showRemoveGroup(client.id, client.name)">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <a href="#" class="ml-2">
+                                            <a :href="'/send-mail/account/'+client.slug+'/'+client.client_uuid" class="ml-2">
                                                 <i class="fa fa-envelope"></i>
                                             </a>
                                         </td>

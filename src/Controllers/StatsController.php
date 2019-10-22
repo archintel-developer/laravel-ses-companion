@@ -23,8 +23,8 @@ class StatsController extends Controller
         return ['success' => true, 'data' => Client::statsForBatch($slug, $batchName)];
     }
 
-    public function statsForEmail($slug, $email)
+    public function statsForEmail($slug, $group, $email)
     {
-        return ['success' => true, 'data' => Client::statsForEmail($slug, $email)];
+        return ['success' => true, 'data' => Client::statsForEmail($slug, $group, $email)];
     }
 }

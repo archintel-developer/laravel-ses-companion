@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use ArchintelDev\LaravelSes\SesMail;
-use App\Mail\SendMail;
+use ArchintelDev\SesCompanion\SendMail;
 use Psr\Http\Message\ServerRequestInterface;
 use ArchintelDev\LaravelSes\Models\EmailOpen;
 use ArchintelDev\LaravelSes\Models\EmailLink;
@@ -17,20 +17,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SnsController extends BaseController
 {
-    public function send()
-    {
-        SesMail::enableAllTracking()->to('seth.abaquita@executivemosaic.com')->send(new SendMail('This is a sample data.'));
-    }
     
-    public function open($slug, $beaconIdentifier)
+    public function open($beaconIdentifier)
     {
-        $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
-        if($id == null) {
-            return response()->json([
-                'success' => true,
-                'data'    => false
-            ]);
-        }
+        // $id = ArchintelDev\SesCompanion\Models\Client::whereSlug($slug)->pluck('client_uuid')->first();
+        // if($id == null) {
+        //     return response()->json([
+        //         'success' => true,
+        //         'data'    => false
+        //     ]);
+        // }
 
         try {
             $open = EmailOpen::whereBeaconIdentifier($beaconIdentifier)->firstOrFail();
@@ -39,25 +35,22 @@ class SnsController extends BaseController
         }
 
         $open->opened_at = Carbon::now();
-        $open->client_id = $id;
         $open->save();
 
         return redirect(config('app.url')."/laravel-ses/to.png");
     }
 
-    public function click($slug, $linkIdentifier)
+    public function click($linkIdentifier)
     {
-        $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
-        if($id == null) {
-            return response()->json([
-                'success' => true,
-                'data'    => false
-            ]);
-        }
+        // $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
+        // if($id == null) {
+        //     return response()->json([
+        //         'success' => true,
+        //         'data'    => false
+        //     ]);
+        // }
         $link = EmailLink::whereLinkIdentifier($linkIdentifier)->firstOrFail();
         $link->setClicked(true)->incrementClickCount();
-        $link->client_id = $id;
-        $link->save();
         return redirect($link->original_url);
     }
 
@@ -186,5 +179,35 @@ class SnsController extends BaseController
         } catch (ModelNotFoundException $e) {
             //delivery won't be logged if this hits
         }
+    }
+
+    public function send($type, $account, $id, $group=null)
+    {
+        // $emails = [
+        //     'ruel', 'seth.abaquita', 'efren', 'aram', 'arnold', 'nino.espina', 'claire.dolorican', 'jancarl', 'zach.hangad', 'eric.bustamante'
+        // ];
+        if($group != null)
+            $group_id = Group::where('slug', $group)->first()->id;
+        if($type == 'account')
+            $emails = Subscriber::where('client_id', $id)->get();
+        if($type == 'group')
+            $emails = Subscriber::where('client_id', $id)->where('group_id', $group_id)->get();
+
+        $datas = array();
+        foreach($emails as $email)
+            array_push($datas, $email->email);
+        
+        if(count($datas) == 0)
+            return response()->json(['success' => false, 'msg' => 'No subscribers found.']);
+            
+        foreach($datas as $email) {
+            if($group != null) {
+                SesMail::enableAllTracking()->setClient($id)->setBatch($group)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
+            } else {
+                SesMail::enableAllTracking()->setClient($id)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
+            }
+        }
+
+        return response()->json(['success' => true, 'msg' => 'Email sent.']);
     }
 }

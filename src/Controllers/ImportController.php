@@ -25,14 +25,14 @@ class ImportController extends Controller
         if($request->hasFile('file')) {
             $contents = file_get_contents($request->file('file'));
             $fileExtension = $request->file->getClientOriginalExtension();
-            $name = $request->slug.'.'.$fileExtension;
+            $name = $request->account.'_'.$request->group.'.'.$fileExtension;
             
             Storage::disk('public')->put($name, $contents);
 
             $path = 'storage/' . $name;
 
             if($fileExtension == 'xlsx') {
-                $saved = Excel::import(new SubscribersImport($request->client_id), $path);
+                $saved = Excel::import(new SubscribersImport($request->account_id, $request->group), $path);
                 if($saved) {
                     return response()->json(['status' => true, 'msg' => 'Imported successfuly!']);
                 }

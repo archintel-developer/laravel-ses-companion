@@ -55,7 +55,6 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Group email</th>
                                         <th>Creation Date</th>
                                         <th></th>
                                     </tr>
@@ -72,21 +71,20 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr v-for="client in groups" v-else>
+                                    <tr v-for="group in groups" v-else>
                                         <td>
-                                            <a :href="'/client/'+client.client_uuid">{{ client.name }}</a>
+                                            <a :href="'/group/'+group.client_id+'/'+group.slug">{{ group.name }}</a>
                                         </td>
-                                        <td>{{ client.email }}</td>
-                                        <td>{{ client.created_at}}</td>
-                                        <td>, 'client_id'
+                                        <td>{{ group.created_at}}</td>
+                                        <td>
                                             <a href="#" class="ml-2">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <!-- <a href="#" @click.prevent="removeClientCredential(credential.id, credential.name)"> -->
-                                            <a href="#" class="ml-2" @click.prevent="showRemoveGroup(client.id, client.name)">
+                                            <a href="#" class="ml-2" @click.prevent="showRemoveGroup(group.id, group.name)">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <a href="#" class="ml-2">
+                                            <a :href="'/send-mail/group/'+account+'/'+group.client_id+'/'+group.slug" class="ml-2">
                                                 <i class="fa fa-envelope"></i>
                                             </a>
                                         </td>
@@ -139,8 +137,8 @@ export default {
     data() {
         return {
             name: '',
-            account: slug,
-            client_id: client,
+            account: this.slug,
+            client_id: this.client,
             groups: [],
 
             g_id: null,
@@ -152,7 +150,7 @@ export default {
             axios.post(window.location.origin + '/group', {
                 name:   this.name,
                 slug:   this.account,
-                client_id: this.this.client_id,
+                client_id: this.client_id,
             }).then(response => {
                 if(response.data.success) {
                     this.name = '';
@@ -173,7 +171,7 @@ export default {
                 });
         },
         removeGroup: function(group, name) {
-            axios.delete(window.location.origin + '/management/' + group)
+            axios.delete(window.location.origin + '/group/' + group)
                 .then(response => {
                     if(response.data.success) {
                         this.$toast.success(name + response.data.msg, 'Success', { position: 'topRight', zindex: 99999999 });
