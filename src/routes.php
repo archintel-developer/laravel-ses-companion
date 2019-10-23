@@ -13,13 +13,13 @@ Route::prefix('/{slug}/{group}')->group(function () {
 Route::prefix('/sr')->group(function () {
     Route::get('beacon/{beaconIdentifier}', 'ArchintelDev\SesCompanion\Controllers\SnsController@open');
     Route::get('link/{linkId}', 'ArchintelDev\SesCompanion\Controllers\SnsController@click');
-    // Route::post('notification/bounce', 'ArchintelDev\SesCompanion\Controllers\SnsController@bounce');
-    // Route::post('notification/complaint', 'ArchintelDev\SesCompanion\Controllers\SnsController@complaint');
-    // Route::post('notification/delivery', 'ArchintelDev\SesCompanion\Controllers\SnsController@delivery');
+    Route::post('notification/bounce', 'ArchintelDev\SesCompanion\Controllers\SnsController@bounce');
+    Route::post('notification/complaint', 'ArchintelDev\SesCompanion\Controllers\SnsController@complaint');
+    Route::post('notification/delivery', 'ArchintelDev\SesCompanion\Controllers\SnsController@delivery');
 
-    Route::post('notification/bounce', 'ArchintelDev\LaravelSes\Controllers\BounceController@bounce');
-    Route::post('notification/delivery', 'ArchintelDev\LaravelSes\Controllers\DeliveryController@delivery');
-    Route::post('notification/complaint', 'ArchintelDev\LaravelSes\Controllers\ComplaintController@complaint');
+    // Route::post('notification/bounce', 'ArchintelDev\LaravelSes\Controllers\BounceController@bounce');
+    // Route::post('notification/delivery', 'ArchintelDev\LaravelSes\Controllers\DeliveryController@delivery');
+    // Route::post('notification/complaint', 'ArchintelDev\LaravelSes\Controllers\ComplaintController@complaint');
 });
 
 Route::resource('management', 'ArchintelDev\SesCompanion\Controllers\ManagementController');

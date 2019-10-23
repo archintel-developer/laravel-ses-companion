@@ -20,14 +20,6 @@ class SnsController extends BaseController
     
     public function open($beaconIdentifier)
     {
-        // $id = ArchintelDev\SesCompanion\Models\Client::whereSlug($slug)->pluck('client_uuid')->first();
-        // if($id == null) {
-        //     return response()->json([
-        //         'success' => true,
-        //         'data'    => false
-        //     ]);
-        // }
-
         try {
             $open = EmailOpen::whereBeaconIdentifier($beaconIdentifier)->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -42,23 +34,14 @@ class SnsController extends BaseController
 
     public function click($linkIdentifier)
     {
-        // $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
-        // if($id == null) {
-        //     return response()->json([
-        //         'success' => true,
-        //         'data'    => false
-        //     ]);
-        // }
         $link = EmailLink::whereLinkIdentifier($linkIdentifier)->firstOrFail();
         $link->setClicked(true)->incrementClickCount();
         return redirect($link->original_url);
     }
 
-    public function bounce(ServerRequestInterface $request, $slug)
+    public function bounce(ServerRequestInterface $request)
     {
         $this->validateSns($request);
-
-        $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
 
         $result = json_decode(request()->getContent());
 
@@ -89,7 +72,6 @@ class SnsController extends BaseController
                 'sent_email_id' => $sentEmail->id,
                 'type' => $message->bounce->bounceType,
                 'email' => $message->mail->destination[0],
-                'client_id' => $id,
                 'bounced_at' => Carbon::parse($message->mail->timestamp)
             ]);
         } catch (ModelNotFoundException $e) {
@@ -97,11 +79,9 @@ class SnsController extends BaseController
         }
     }
 
-    public function complaint(ServerRequestInterface $request, $slug)
+    public function complaint(ServerRequestInterface $request)
     {
         $this->validateSns($request);
-
-        $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
 
         $result = json_decode(request()->getContent());
 
@@ -133,18 +113,15 @@ class SnsController extends BaseController
                 'sent_email_id' => $sentEmail->id,
                 'type' => $message->complaint->complaintFeedbackType,
                 'email' => $message->mail->destination[0],
-                'client_id' => $id,
                 'complained_at' =>  Carbon::parse($message->mail->timestamp)
             ]);
         } catch (ModelNotFoundException $e) {
         }
     }
 
-    public function delivery(ServerRequestInterface $request, $slug)
+    public function delivery(ServerRequestInterface $request)
     {
         $this->validateSns($request);
-
-        $id = \App\Client::whereSlug($slug)->pluck('client_uuid')->first();
 
         $result = json_decode(request()->getContent());
 
@@ -174,8 +151,6 @@ class SnsController extends BaseController
                 ->whereDeliveryTracking(true)
                 ->firstOrFail();
             $sentEmail->setDeliveredAt($deliveryTime);
-            $sentEmail->client_id = $id;
-            $sentEmail->save();
         } catch (ModelNotFoundException $e) {
             //delivery won't be logged if this hits
         }

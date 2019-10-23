@@ -23,7 +23,7 @@ class SesCompanionServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/Mail' => app_path('Http/Controllers'
-        )], 'imports');
+        )], 'mail');
 
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->loadRoutesFrom(__DIR__.'/routes.php');

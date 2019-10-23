@@ -29,6 +29,6 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('sample_email')->with('data', $this->data);
+        return $this->view('companion.sample_email')->with('data', $this->data);
     }
 }
