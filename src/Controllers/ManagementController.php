@@ -116,7 +116,7 @@ class ManagementController extends Controller
 
     public function show_dashboard()
     {
-        return view('pages.management');
+        return view('companion.dashboard');
     }
 
     public function show_group_sub($uuid, $slug)
