@@ -6,7 +6,7 @@
 
 @section('content')
 <div id="app" class="container">
-    {{-- <div class="row row-stretch"> --}}
+    <div class="row row-stretch">
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-12">
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-    {{-- </div> --}}
+    </div>
 </div>
 @endsection
 
