@@ -14,10 +14,10 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $account_id)
     {
         if($request->wantsJson()) {
-            return response()->json(['groups' => Group::all()]);
+            return response()->json(['groups' => Group::where('client_id', $account_id)->get()]);
         }
     }
 
@@ -101,6 +101,45 @@ class GroupController extends Controller
             return response()->json(['msg' => ' successfuly deleted!', 'success' => true]);
         } else {
             return response()->json(['msg' => 'Error deleting data!', 'success' => false]);
+        }
+    }
+
+
+    public function getSubscribers($account, $group_slug)
+    {
+        $client = Client::where('client_uuid', $account)->first();
+        $group = Group::where('slug', $group_slug)->first();
+        $subscribers = Subscriber::where('client_id', $account)->where('group_id', $group->id)->get();
+
+        return response()->json(['client' => $client, 'group' => $group, 'subscribers' => $subscribers]);
+    }
+
+    public function removeSubscriber($id)
+    {
+        $subscriber = Subscriber::find($id);
+        $deleted = $subscriber->delete();
+
+        if($deleted) {
+            return response()->json(['msg' => ' successfuly deleted!', 'success' => true]);
+        } else {
+            return response()->json(['msg' => 'Error deleting data!', 'success' => false]);
+        }
+    }
+
+    public function get_group(Request $request)
+    {
+        return response()->json(['group' => Group::find($request->id)]);
+    }
+
+    public function update_group(Request $request, $id)
+    {
+        $group = Group::find($id);
+        $group->name = $request->input('name');
+        $saved = $group->save();
+        if($saved) {
+            return response()->json(['msg' => '<b>'.$request->name.'</b> '.' updated successfuly!', 'success' => true]);
+        } else {
+            return response()->json(['msg' => 'Update failed!', 'success' => false]);
         }
     }
 }

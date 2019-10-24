@@ -8,5 +8,6 @@ Vue.use(VeeValidate);
 
 Vue.component('dashboard', require('./components/DashboardComponent.vue').default);
 Vue.component('group-component', require('./components/GroupComponent.vue').default);
+Vue.component('subscriber-component', require('./components/SubscriberComponent.vue').default);
 
 window.SesCompanion = new Vue();

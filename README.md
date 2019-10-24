@@ -10,26 +10,13 @@ in your terminal run this commanp
 php artisan vendor:publish
 ```
 
+### You can beautify the vue template created in the package found in resources folder __js/ArchintelDev/SesCompanion/__
+
 add the assets in your **app.js** file
 ```js
 require('./ArchintelDev/SesCompanion/app');
 ```
 
-### Adding the component in your blade
-```
-will be provided soon
-```
-for dashboard :
-```html
-<dashboard></dashboard>
-```
-for import subscribers: **add in your routes**
-```html
-<import-subscriber></import-subscriber>
-```
-for view subscribers on group:
-```php
-Route::get('client/{uuid}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_subscribers']);
-```
+Run this command **npm run dev**
 
-### 
+To use the created dashboard, redirect to route __dashboard__

@@ -26,6 +26,11 @@ Route::get('/dashboard', 'ArchintelDev\SesCompanion\Controllers\ManagementContro
 
 Route::resource('group', 'ArchintelDev\SesCompanion\Controllers\GroupController');
 
+Route::get('/account-group/{account_id}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\GroupController@index']);
+
+Route::get('/group-subscribers/{account_id}/{group}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\GroupController@getSubscribers']);
+Route::delete('/remove-subscriber/{id}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\GroupController@removeSubscriber']);
+
 Route::get('/account/{account}/{account_id}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group');
 Route::get('/group/{account_id}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group_sub');
 Route::get('/subscriber/{account}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_stat');
@@ -34,3 +39,10 @@ Route::get('/send-mail/{type}/{account}/{account_id}/{group?}', 'ArchintelDev\Se
 
 Route::get('/import-subscriber/{account}/{account_uuid}/{group}', 'ArchintelDev\SesCompanion\Controllers\ImportController@import_subscriber')->name('importUser');
 Route::post('/importSubscriber', 'ArchintelDev\SesCompanion\Controllers\ImportController@importSubscriber')->name('importSub');
+
+Route::get('/get-account', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@get_account']);
+Route::put('/update-account/{id}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@update_account']);
+Route::get('/get-group', ['uses' => 'ArchintelDev\SesCompanion\Controllers\GroupController@get_group']);
+Route::put('/update-group/{id}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\GroupController@update_group']);
+Route::get('/get-subscriber', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@get_subscriber']);
+Route::put('/update-subscriber/{id}', ['uses' => 'ArchintelDev\SesCompanion\Controllers\ManagementController@update_subscriber']);

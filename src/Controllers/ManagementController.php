@@ -128,14 +128,47 @@ class ManagementController extends Controller
         return view('companion.subscriber')->with(['client' => $client, 'group' => $group, 'subscribers' => $subscribers]);
     }
 
-    public function show_group($account_id)
+    public function show_group($account, $id)
     {
-        $account = Client::where('client_uuid', $account_id)->first();
-        return view('companion.group')->with('account', $account);
+        $groups = Group::where('client_id', $id)->get();
+        return view('companion.group')->with('groups', $groups);
     }
 
-    public function show_stat($account, $group)
+
+    public function get_account(Request $request)
     {
-        
+        return response()->json(['client' => Client::find($request->id)]);
+    }
+
+    public function update_account(Request $request, $id)
+    {
+        $account = Client::find($id);
+        $account->name = $request->input('name');
+        $account->email = $request->input('email');
+        $saved = $account->save();
+        if($saved) {
+            return response()->json(['msg' => '<b>'.$request->name.'</b> '.' updated successfuly!', 'success' => true]);
+        } else {
+            return response()->json(['msg' => 'Update failed!', 'success' => false]);
+        }
+    }
+
+    public function get_subscriber(Request $request)
+    {
+        return response()->json(['subscriber' => Subscriber::find($request->id)]);
+    }
+
+    public function update_subscriber(Request $request, $id)
+    {
+        $sub = Subscriber::find($id);
+        $sub->firstname = $request->input('firstname');
+        $sub->lastname = $request->input('lastname');
+        $sub->email = $request->input('email');
+        $saved = $sub->save();
+        if($saved) {
+            return response()->json(['msg' => '<b>'.$request->firstname.'</b> '.' updated successfuly!', 'success' => true]);
+        } else {
+            return response()->json(['msg' => 'Update failed!', 'success' => false]);
+        }
     }
 }

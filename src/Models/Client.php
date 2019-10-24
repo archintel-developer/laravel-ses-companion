@@ -115,8 +115,8 @@ class Client extends Model
 
     public static function statsForEmail($slug, $group, $email)
     {
-        $id = Client::whereSlug($slug)->pluck('client_uuid')->first();
-        if($id == null) {
+        $account = Client::whereSlug($slug)->pluck('client_uuid')->first();
+        if($account == null) {
             return response()->json([
                 'success' => true,
                 'data'    => false
@@ -128,9 +128,9 @@ class Client extends Model
             'account' => self::whereSlug($slug)->first(),
             'group' => Group::whereSlug($group)->get(),
             'counts' => [
-                'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $id)->count(),
-                'deliveries' => SentEmail::whereEmail($email)->where('client_id', $id)->whereNotNull('delivered_at')->count(),
-                'opens' => EmailOpen::whereEmail($email)->whereNotNull('opened_at')->count(),
+                'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $account->client_uuid)->where('batch', $group)->count(),
+                'deliveries' => SentEmail::whereEmail($email)->where('client_id', $account->client_uuid)->where('batch', $group)->whereNotNull('delivered_at')->count(),
+                'opens' => EmailOpen::whereEmail($email)->where('batch', $group)->whereNotNull('opened_at')->count(),
                 'bounces' => EmailBounce::whereEmail($email)->whereNotNull('bounced_at')->count(),
                 'complaints' => EmailComplaint::whereEmail($email)->whereNotNull('complained_at')->count(),
                 'click_throughs' => EmailLink::join(
@@ -140,12 +140,13 @@ class Client extends Model
                     )
                     ->where('laravel_ses_sent_emails.email', '=', $email)
                     ->whereClicked(true)
+                    ->where('laravel_ses_sent_emails.batch', $group)
                     ->count(\DB::raw('DISTINCT(laravel_ses_sent_emails.id)')) // if a user clicks two different links on one campaign, only one is counted
             ],
             'data' => [
-                'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $id)->get(),
-                'deliveries' => SentEmail::whereEmail($email)->where('client_id', $id)->whereNotNull('delivered_at')->get(),
-                'opens' => EmailOpen::whereEmail($email)->whereNotNull('opened_at')->get(),
+                'sent_emails' => SentEmail::whereEmail($email)->where('client_id', $account->client_uuid)->where('batch', $group)->get(),
+                'deliveries' => SentEmail::whereEmail($email)->where('client_id', $account->client_uuid)->where('batch', $group)->whereNotNull('delivered_at')->get(),
+                'opens' => EmailOpen::whereEmail($email)->where('batch', $group)->whereNotNull('opened_at')->get(),
                 'bounces' => EmailBounce::whereEmail($email)->whereNotNull('bounced_at')->get(),
                 'complaints' => EmailComplaint::whereEmail($email)->whereNotNull('complained_at')->get(),
                 'click_throughs' => EmailLink::join(
@@ -154,6 +155,7 @@ class Client extends Model
                     'laravel_ses_email_links.sent_email_id'
                 )
                 ->where('laravel_ses_sent_emails.email', '=', $email)
+                ->where('laravel_ses_sent_emails.batch', $group)
                 ->whereClicked(true)
                 ->get()
             ]
@@ -172,6 +174,7 @@ class Client extends Model
 
         return [
             'client' => self::where('client_uuid', $id)->whereSlug($slug)->get(),
+            'group' => Group::whereSlug($batchName)->get(),
             'send_count' => SentEmail::whereBatch($batchName)->where('client_id', $id)->count(),
             'deliveries' => SentEmail::whereBatch($batchName)->where('client_id', $id)->whereNotNull('delivered_at')->count(),
             'opens' => SentEmail::join(

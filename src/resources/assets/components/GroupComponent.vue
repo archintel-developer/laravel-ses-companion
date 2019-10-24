@@ -38,6 +38,41 @@
                 </div>
             </div>
             <!--ADD NEW GROUP END-->
+            <!--EDIT GROUP-->
+            <div class="modal fade" id="modal-edit-group" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-light">
+                            <h5 class="modal-title">Edit Group</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+            
+                        <form id="form-add-user" v-on:submit.prevent="updateGroup">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Group Name</label> 
+                                            <input type="text" name="ename" v-model="ename" class="form-control"> 
+                                        </div>                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--EDIT GROUP END-->
         <!-- END MODAL -->
         <div class="col-lg-12">
             <div class="row">
@@ -77,7 +112,7 @@
                                         </td>
                                         <td>{{ group.created_at}}</td>
                                         <td>
-                                            <a href="#" class="ml-2">
+                                            <a href="#" class="ml-2" @click.prevent="showEditGroup(group.id, group.name)">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <!-- <a href="#" @click.prevent="removeClientCredential(credential.id, credential.name)"> -->
@@ -141,6 +176,9 @@ export default {
             client_id: this.client,
             groups: [],
 
+            ename: '',
+            egroup: [],
+
             g_id: null,
             g_name: null,
         }
@@ -162,8 +200,21 @@ export default {
                 console.log(e);
             });
         },
+        updateGroup: function() {
+            axios.put(window.location.origin + '/update-group/'+this.g_id, {
+                name: this.ename,
+            }).then(response => {
+                    if(response.data.success) {
+                        this.$toast.success(response.data.msg, 'Success', { position: 'topRight', zindex: 9999999 });
+                        this.getGroup();
+                        $('#modal-edit-group').modal('hide');
+                    }
+            }).catch(e => {
+                console.log(e);
+            });
+        },
         getGroup: function() {
-            axios.get(window.location.origin + '/group')
+            axios.get(window.location.origin + '/account-group/'+this.client)
                 .then(response => {
                     this.groups = response.data.groups;
                 }).catch(e => {
@@ -184,12 +235,27 @@ export default {
         showAddGroup: function() {
             $('#modal-add-group').modal('show');
         },
+        showEditGroup: function(id, name) {
+            axios.get(window.location.origin + '/get-group', {
+                params: {
+                    id: id,
+                }
+            }).then(response => {
+                this.egroup = response.data.group;
+                this.ename = this.egroup.name;
+                this.g_id = this.egroup.id;
+                this.g_name = this.egroup.name;
+                $("#modal-edit-group").modal("show");
+            }).catch(e => {
+                console.log(e);
+            });
+        },
         showRemoveGroup: function(id, name) {
             this.g_id = id;
             this.g_name = name;
             $('#modal-remove-group').modal('show');
         }
     },
-    props: ['slug', 'client']
+    props: ['slug', 'client', 'data']
 }
 </script>

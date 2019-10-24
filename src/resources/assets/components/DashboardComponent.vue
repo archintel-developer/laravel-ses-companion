@@ -39,6 +39,44 @@
                 </div>
             </div>
             <!--ADD NEW GROUP END-->
+            <!--EDIT GROUP-->
+            <div class="modal fade" id="modal-edit-group" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-light">
+                            <h5 class="modal-title">Edit Account</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+            
+                        <form id="form-add-user" v-on:submit.prevent="updateGroup">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Acount Name</label> 
+                                            <input type="text" name="ename" v-model="ename" class="form-control"> 
+
+                                            <label>Account Email</label> 
+                                            <input type="email" name="eemail" v-model="eemail" class="form-control"> 
+                                        </div>                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--EDIT GROUP END-->
         <!-- END MODAL -->
         <div class="col-lg-12">
             <div class="row">
@@ -81,16 +119,16 @@
                                         <td>{{ client.email }}</td>
                                         <td>{{ client.created_at}}</td>
                                         <td>
-                                            <a href="#" class="ml-2">
+                                            <a href="#" class="ml-2" @click.prevent="showEditGroup(client.id, client.name)">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                             <!-- <a href="#" @click.prevent="removeClientCredential(credential.id, credential.name)"> -->
                                             <a href="#" class="ml-2" @click.prevent="showRemoveGroup(client.id, client.name)">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            <a :href="'/send-mail/account/'+client.slug+'/'+client.client_uuid" class="ml-2">
+                                            <!-- <a :href="'/send-mail/account/'+client.slug+'/'+client.client_uuid" class="ml-2">
                                                 <i class="fa fa-envelope"></i>
-                                            </a>
+                                            </a> -->
                                         </td>
                                     </tr>
 
@@ -144,6 +182,10 @@ export default {
             name: '',
             clients: [],
 
+            eemail: '',
+            ename: '',
+            eclient: '',
+
             g_id: null,
             g_name: null,
         }
@@ -173,6 +215,20 @@ export default {
                     console.log(e);
                 });
         },
+        updateGroup: function() {
+            axios.put(window.location.origin + '/update-account/'+this.g_id, {
+                name: this.ename,
+                email: this.eemail
+            }).then(response => {
+                    if(response.data.success) {
+                        this.$toast.success(response.data.msg, 'Success', { position: 'topRight', zindex: 9999999 });
+                        this.getGroup();
+                        $('#modal-edit-group').modal('hide');
+                    }
+            }).catch(e => {
+                console.log(e);
+            });
+        },
         removeGroup: function(client, name) {
             axios.delete(window.location.origin + '/management/' + client)
                 .then(response => {
@@ -186,6 +242,22 @@ export default {
         },
         showAddGroup: function() {
             $('#modal-add-group').modal('show');
+        },
+        showEditGroup: function(id, name) {
+            axios.get(window.location.origin + '/get-account', {
+                params: {
+                    id: id,
+                }
+            }).then(response => {
+                this.eclient = response.data.client;
+                this.ename = this.eclient.name;
+                this.eemail = this.eclient.email;
+                this.g_id = this.eclient.id;
+                this.g_name = this.eclient.name;
+                $("#modal-edit-group").modal("show");
+            }).catch(e => {
+                console.log(e);
+            });
         },
         showRemoveGroup: function(id, name) {
             this.g_id = id;

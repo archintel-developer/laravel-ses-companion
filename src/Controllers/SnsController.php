@@ -7,12 +7,14 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use ArchintelDev\LaravelSes\SesMail;
-use ArchintelDev\SesCompanion\SendMail;
+use ArchintelDev\SesCompanion\Mail\SendMail;
+use ArchintelDev\SesCompanion\Models\Group;
 use Psr\Http\Message\ServerRequestInterface;
 use ArchintelDev\LaravelSes\Models\EmailOpen;
 use ArchintelDev\LaravelSes\Models\EmailLink;
 use ArchintelDev\LaravelSes\Models\SentEmail;
 use ArchintelDev\LaravelSes\Models\EmailBounce;
+use ArchintelDev\SesCompanion\Models\Subscriber;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SnsController extends BaseController
@@ -177,9 +179,9 @@ class SnsController extends BaseController
             
         foreach($datas as $email) {
             if($group != null) {
-                SesMail::enableAllTracking()->setClient($id)->setBatch($group)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
+                SesMail::enableAllTracking()->setAccount($id)->setBatch($group)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
             } else {
-                SesMail::enableAllTracking()->setClient($id)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
+                SesMail::enableAllTracking()->setAccount($id)->to($email)->send(new SendMail('Si Seth Joey Hinampas Abaquita kay gwapo.'));
             }
         }
 
