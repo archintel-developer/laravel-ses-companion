@@ -2,6 +2,8 @@
 
 namespace ArchintelDev\SesCompanion\Controllers;
 
+use ArchintelDev\SesCompanion\Models\Subscriber;
+use ArchintelDev\SesCompanion\Models\Client;
 use ArchintelDev\SesCompanion\Models\Group;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
