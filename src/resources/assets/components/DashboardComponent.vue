@@ -90,7 +90,7 @@
                         </div>
                         <div class="card-body">
                             <h4>Accounts</h4>          
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>Name</th>

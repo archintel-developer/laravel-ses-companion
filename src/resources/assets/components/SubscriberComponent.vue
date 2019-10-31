@@ -53,7 +53,7 @@
                                 <span class="fa fa-plus"></span>
                                 Import
                             </a>
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>Lastname</th>

@@ -86,7 +86,7 @@
                         </div>
                         <div class="card-body">
                             <h4>Groups</h4>          
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -121,6 +121,9 @@
                                             </a>
                                             <a :href="'/send-mail/group/'+account+'/'+group.client_id+'/'+group.slug" class="ml-2">
                                                 <i class="fa fa-envelope"></i>
+                                            </a>
+                                            <a :href="'/'+account+'/'+group.slug+'/api/stats/batch/'+group.slug" class="ml-2">
+                                                <i class="fa fa-chart-bar"></i>
                                             </a>
                                         </td>
                                     </tr>
