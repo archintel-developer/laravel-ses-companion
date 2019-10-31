@@ -1,7 +1,7 @@
 <?php
 
 //package api
-Route::prefix('/{slug}/{group}')->group(function () {
+Route::prefix('/{account}/{group}')->group(function () {
     Route::get('api/has/bounced/{email}', 'ArchintelDev\SesCompanion\Controllers\StatsController@hasBounced');
     Route::get('api/has/complained/{email}', 'ArchintelDev\SesCompanion\Controllers\StatsController@hasComplained');
     Route::get('api/stats/batch/{name}', 'ArchintelDev\SesCompanion\Controllers\StatsController@statsForBatch');
@@ -35,7 +35,7 @@ Route::get('/account/{account}/{account_id}', 'ArchintelDev\SesCompanion\Control
 Route::get('/group/{account_id}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_group_sub');
 Route::get('/subscriber/{account}/{group}', 'ArchintelDev\SesCompanion\Controllers\ManagementController@show_stat');
 
-Route::get('/send-mail/{type}/{account}/{account_id}/{group?}', 'ArchintelDev\SesCompanion\Controllers\SnsController@send');
+Route::get('/send-sample-mail/{type}/{account}/{account_id}/{group?}', 'ArchintelDev\SesCompanion\Controllers\SnsController@send');
 
 Route::get('/import-subscriber/{account}/{account_uuid}/{group}', 'ArchintelDev\SesCompanion\Controllers\ImportController@import_subscriber')->name('importUser');
 Route::post('/importSubscriber', 'ArchintelDev\SesCompanion\Controllers\ImportController@importSubscriber')->name('importSub');

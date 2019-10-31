@@ -185,6 +185,6 @@ class SnsController extends BaseController
             }
         }
 
-        return response()->json(['success' => true, 'msg' => 'Email sent.']);
+        return response()->json(['success' => true, 'msg' => 'Sample email sent.']);
     }
 }
