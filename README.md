@@ -41,15 +41,11 @@ To test, you can send email through this url
 ```
 /send-sample-mail/{type}/{account}/{account_id}/{group?}
 ```
-where 
-### 
-**type** = __'account'__ or __'group'__ ,
-### 
-**account** = __client_slug__ ,
-### 
-**account_id** = __client_uuid__ and
-### 
-**group** is optional, if you want to send it by batch you can set it to __group_slug__
+where  
+**type** = __'account'__ or __'group'__ ,  
+**account** = __client_slug__ ,  
+**account_id** = __client_uuid__ and  
+**group** can be null, if you want to send it by batch you can set it to __group_slug__
 
 
 ### 
